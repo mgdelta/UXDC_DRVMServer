@@ -22,7 +22,7 @@ set(SRC_FILES
 
 
 
-#include_directories( ${OpenCV_INCLUDE_DIRS} )
+#include_directories( ${CMAKE_CURRENT_SOURCE_DIR}/include )
 
 
 #get_filename_component(SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR} ABSOLUTE)
@@ -62,7 +62,7 @@ add_executable(${PROJECT_NAME}
 
 target_include_directories(${PROJECT_NAME} PRIVATE 
 #	${PROTO_INCLUDE_DIRS}/
-#	${CMAKE_CURRENT_SOURCE_DIR}/include/
+	${CMAKE_CURRENT_SOURCE_DIR}/include/
 #	${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/stb
 #${Boost_INCLUDE_DIRS}
 	/opt/pylon/include
