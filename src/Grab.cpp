@@ -27,6 +27,7 @@
 #include <opencv2/opencv.hpp>
 
 #include "SampleImageCreator.h"
+#include <fstream>
 
 
 using namespace cv;
@@ -89,11 +90,15 @@ CFloatParameter frames(nodemap, "ResultingFrameRate");
         // Save the content of the camera's node map into the file.
         CFeaturePersistence::Save( Filename, &camera.GetNodeMap() );
 
+        ifstream f(UXDCFilename);
+        bool gibtesdiedatei = f.good();
 
-        cout << "Reading UXDC file back to camera's node map..."<< endl;
-        // Just for demonstration, read the content of the file back to the camera's node map with enabled validation.
-        CFeaturePersistence::Load( UXDCFilename, &camera.GetNodeMap(), true );
-
+        if (gibtesdiedatei)
+        {
+            cout << "Reading UXDC file back to camera's node map..."<< endl;
+            // Just for demonstration, read the content of the file back to the camera's node map with enabled validation.
+            CFeaturePersistence::Load( UXDCFilename, &camera.GetNodeMap(), true );
+        }
 cout << "GetModelName: " << camera.GetDeviceInfo().GetModelName() << endl;
 cout << "GetSerialNumber: " << camera.GetDeviceInfo().GetSerialNumber() << endl;
 cout << "GetDeviceVersion: " << camera.GetDeviceInfo().GetDeviceVersion() << endl;
