@@ -74,7 +74,17 @@ void BaslerCamera::StartGrabbing()
         // sets up free-running continuous acquisition.
         //camera.StartGrabbing( c_countOfImagesToGrab);
         
-        camera->StartGrabbing();
+        try
+        {
+            camera->StartGrabbing();
+        }
+        catch(const Pylon::GenericException e)
+        {
+        // Error handling.
+        std::cerr << "An exception occurred." << std::endl << e.GetDescription() << std::endl;
+        }
+        
+
 
 }      
 bool BaslerCamera::CamIsGrabbing()
@@ -84,8 +94,14 @@ bool BaslerCamera::CamIsGrabbing()
 
 void BaslerCamera::GetGrabbedImage(Pylon::CGrabResultPtr &ptrImagePointer)
 {
-    // Wait for an image and then retrieve it. A timeout of 5000 ms is used.
-    camera->RetrieveResult( 5000, ptrImagePointer, Pylon::TimeoutHandling_ThrowException);
-    
+    try {
+        // Wait for an image and then retrieve it. A timeout of 5000 ms is used.
+        camera->RetrieveResult( 5000, ptrImagePointer, Pylon::TimeoutHandling_ThrowException);
+    }
+          catch(const Pylon::GenericException e)
+        {
+        // Error handling.
+        std::cerr << "An exception occurred." << std::endl << e.GetDescription() << std::endl;
+        }  
 
 }
