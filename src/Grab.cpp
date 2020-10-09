@@ -29,6 +29,7 @@
 #include "SampleImageCreator.h"
 #include <fstream>
 
+#include "BaslerCamera.h"
 
 using namespace cv;
 
@@ -42,8 +43,11 @@ using namespace std;
 static const uint32_t c_countOfImagesToGrab = 1000;
 
 
-const char Filename[] = "CamNodeMap.pfs";
+const char Filename[] = "CamDefaultNodeMap.pfs";
 const char UXDCFilename[] = "UXDCNodeMap.pfs";
+
+const std::string dateiname = "MeineDatei.pfs";
+const std::string loaddatei = "Gibtesnicht.pfs";
     
     //Mat image;
     //Mat image = imread("star-wars-logo.jpg", 1);
@@ -54,13 +58,54 @@ int main(int argc, char* argv[])
     //namedWindow("Display Image", WINDOW_AUTOSIZE );
     //imshow("Display Image", image);
     //waitKey(0);	
-	
-	
+    {
+	    BaslerCamera usedCamera;
+        usedCamera.OpenFirstCamera();
+        usedCamera.SaveCamParametersToFile(dateiname);
+        usedCamera.SetMandatoryDefaultParameters();
+        usedCamera.LoadCamParametersFromFile(loaddatei);
+        usedCamera.StartGrabbing();
+        while( cin.get() != '\n');
+        CGrabResultPtr ptrMyImage;
+        while (usedCamera.CamIsGrabbing())
+        {
+            usedCamera.GetGrabbedImage(ptrMyImage);
+            		CImageFormatConverter formatConverter;
+		            formatConverter.OutputPixelFormat = PixelType_BGR8packed;
+		            CPylonImage pylonImage;
+            if (ptrMyImage->GrabSucceeded())
+            {
+                std::cout << "Grabbed ";
+                                // Access the image data.
+                //cout << "SizeX: " << ptrGrabResult->GetWidth() << endl;
+                //cout << "SizeY: " << ptrGrabResult->GetHeight() << endl;
+                const uint8_t *pImageBuffer = (uint8_t *) ptrMyImage->GetBuffer();
+                //cout << "Gray value of first pixel: " << (uint32_t) pImageBuffer[0] << endl << endl;
+                
+                //cout << "FPS: " << frames.GetValue() << endl;
+                //cout << "Timestamp: " << ptrGrabResult->GetTimeStamp() << endl;
+                cout << "Frame No: " << ptrMyImage->GetImageNumber() << endl;
+                //cout << "Size Bytes: " << ptrGrabResult->GetImageSize() << endl;
+
+                
+                
+                // formatConverter.Convert(pylonImage, ptrMyImage);
+                // Mat camimage = Mat(1200,1600,CV_8UC3, (uint8_t *) pylonImage.GetBuffer());
+                // namedWindow("Ausgabe", WINDOW_NORMAL);
+                // imshow("Ausgabe", camimage);
+                // waitKey(1);
+                // ptrMyImage.Release();
+            }
+        }
+    }
+
+	//usedCamera.OpenFirstCamera();
     // The exit code of the sample application.
     int exitCode = 0;
 
     // Before using any pylon methods, the pylon runtime must be initialized. 
-    PylonInitialize();
+     PylonInitialize();
+
 
     try
     {

@@ -18,11 +18,14 @@ find_package( OpenCV REQUIRED )
 
 set(SRC_FILES
   ${CMAKE_CURRENT_SOURCE_DIR}/src/Grab.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/BaslerCamera.cpp
 )
 
 
 
-#include_directories( ${CMAKE_CURRENT_SOURCE_DIR}/include )
+include_directories( 
+  ${CMAKE_CURRENT_SOURCE_DIR}/include
+  /opt/pylon/include )
 
 
 #get_filename_component(SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR} ABSOLUTE)
