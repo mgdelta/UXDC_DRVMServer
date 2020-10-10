@@ -13,7 +13,7 @@ class BaslerCamera
         GenApi::INodeMap *nodemap;
 
         const int max_framerate = 30;
-        CamParameter_Device cCamParams;
+        CamDeviceParameter cCamParams;
 
     public:
         BaslerCamera();
@@ -26,16 +26,9 @@ class BaslerCamera
         void StartGrabbing();
         bool CamIsGrabbing();
         void GetGrabbedImage(Pylon::CGrabResultPtr &ptrImagePointer);
+        void SaveDeviceParameters();
 
-    struct CamDeviceInfo{
-        std::string strModelName;
-        std::string strSerialNumber;
-        std::string strDeviceFactory;
-        std::string strFriendlyName;
-        std::string strFullName;
-        std::string strVendorName;
-        std::string strDeviceGUID;
-    };
+
 
     struct CamSensorParameter{
         int width;

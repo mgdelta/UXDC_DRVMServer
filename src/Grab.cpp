@@ -59,13 +59,14 @@ int main(int argc, char* argv[])
     //imshow("Display Image", image);
     //waitKey(0);	
 
-    /*
+    
     {
 	    BaslerCamera usedCamera;
         usedCamera.OpenFirstCamera();
         usedCamera.SaveCamParametersToFile(dateiname);
         usedCamera.SetMandatoryDefaultParameters();
         usedCamera.LoadCamParametersFromFile(loaddatei);
+        usedCamera.SaveDeviceParameters();
         usedCamera.StartGrabbing();
         while( cin.get() != '\n');
         CGrabResultPtr ptrMyImage;
@@ -100,7 +101,7 @@ int main(int argc, char* argv[])
             }
         }
     }
-*/
+
 	//usedCamera.OpenFirstCamera();
     // The exit code of the sample application.
     int exitCode = 0;

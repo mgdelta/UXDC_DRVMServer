@@ -3,7 +3,7 @@
 
 #include <string>
 
-class CamParameter_Device
+class CamDeviceParameter
 {
     private:
         std::string strModelName;
@@ -15,19 +15,19 @@ class CamParameter_Device
         std::string strDeviceGUID;
 
     public:
-        std::string GetModelName();
-        std::string GetSerialNumber();
-        std::string GetDeviceFactory();
-        std::string GetFriendlyName();
-        std::string GetFullName();
-        std::string GetVendorName();
-        std::string GetDeviceGUID();
-        void SetModelName(std::string strValue);
-        void SetSerialNumber(std::string strValue);
-        void SetDeviceFactory(std::string strValue);
-        void SetFriendlyName(std::string strValue);
-        void SetFullName(std::string strValue);
-        void SetVendorName(std::string strValue);
-        void SetDeviceGUID(std::string strValue);
+        const std::string GetModelName();
+        const std::string GetSerialNumber();
+        const std::string GetDeviceFactory();
+        const std::string GetFriendlyName();
+        const std::string GetFullName();
+        const std::string GetVendorName();
+        const std::string GetDeviceGUID();
+        void SetModelName(const std::string& strValue);
+        void SetSerialNumber(const std::string& strValue);
+        void SetDeviceFactory(const std::string& strValue);
+        void SetFriendlyName(const std::string& strValue);
+        void SetFullName(const std::string& strValue);
+        void SetVendorName(const std::string& strValue);
+        void SetDeviceGUID(const std::string& strValue);
 };
 #endif

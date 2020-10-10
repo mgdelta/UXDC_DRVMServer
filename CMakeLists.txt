@@ -19,6 +19,7 @@ find_package( OpenCV REQUIRED )
 set(SRC_FILES
   ${CMAKE_CURRENT_SOURCE_DIR}/src/Grab.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/src/BaslerCamera.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/CamParameters.cpp
 )
 
 

@@ -102,3 +102,15 @@ void BaslerCamera::GetGrabbedImage(Pylon::CGrabResultPtr &ptrImagePointer)
         std::cerr << "An exception occurred." << std::endl << e.GetDescription() << std::endl;
         }  
 }
+
+void BaslerCamera::SaveDeviceParameters()
+{
+    // one time parameters of device, never changed during operation
+    cCamParams.SetModelName(static_cast<std::string>(camera->GetDeviceInfo().GetModelName()));
+    cCamParams.SetSerialNumber(static_cast<std::string>(camera->GetDeviceInfo().GetSerialNumber()));
+    cCamParams.SetDeviceFactory(static_cast<std::string>(camera->GetDeviceInfo().GetDeviceFactory()));
+    cCamParams.SetFriendlyName(static_cast<std::string>(camera->GetDeviceInfo().GetFriendlyName()));
+    cCamParams.SetFullName(static_cast<std::string>(camera->GetDeviceInfo().GetFullName()));
+    cCamParams.SetVendorName(static_cast<std::string>(camera->GetDeviceInfo().GetVendorName()));
+    cCamParams.SetDeviceGUID(static_cast<std::string>(camera->GetDeviceInfo().GetDeviceGUID()));
+}
