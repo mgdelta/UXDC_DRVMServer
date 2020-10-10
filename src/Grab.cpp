@@ -20,7 +20,6 @@ using namespace std;
 // Number of images to be grabbed.
 // static const uint32_t c_countOfImagesToGrab = 1000;
 
-
 // const char Filename[] = "CamDefaultNodeMap.pfs";
 // const char UXDCFilename[] = "UXDCNodeMap.pfs";
 
@@ -63,12 +62,14 @@ int main(int argc, char* argv[])
 
         while( cin.get() != '\n');
         CGrabResultPtr ptrMyImage;
+        CImageFormatConverter formatConverter;
+		formatConverter.OutputPixelFormat = PixelType_BGR8packed;
+        CPylonImage pylonImage;
+
         while (usedCamera.CamIsGrabbing())
         {
             usedCamera.GetGrabbedImage(ptrMyImage);
-            		CImageFormatConverter formatConverter;
-		            formatConverter.OutputPixelFormat = PixelType_BGR8packed;
-		            CPylonImage pylonImage;
+
             if (ptrMyImage->GrabSucceeded())
             {
                 std::cout << "Grabbed ";
@@ -81,6 +82,7 @@ int main(int argc, char* argv[])
                 //cout << "FPS: " << frames.GetValue() << endl;
                 //cout << "Timestamp: " << ptrGrabResult->GetTimeStamp() << endl;
                 cout << "Frame No: " << ptrMyImage->GetImageNumber() << endl;
+                usedCamera.UpdateDeviceParameters(true);
                 //cout << "Size Bytes: " << ptrGrabResult->GetImageSize() << endl;
 
                 
