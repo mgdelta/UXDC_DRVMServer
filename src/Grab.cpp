@@ -1,28 +1,6 @@
-// Grab.cpp
-/*
-    Note: Before getting started, Basler recommends reading the "Programmer's Guide" topic
-    in the pylon C++ API documentation delivered with pylon.
-    If you are upgrading to a higher major version of pylon, Basler also
-    strongly recommends reading the "Migrating from Previous Versions" topic in the pylon C++ API documentation.
-
-    This sample illustrates how to grab and process images using the CInstantCamera class.
-    The images are grabbed and processed asynchronously, i.e.,
-    while the application is processing a buffer, the acquisition of the next buffer is done
-    in parallel.
-
-    The CInstantCamera class uses a pool of buffers to retrieve image data
-    from the camera device. Once a buffer is filled and ready,
-    the buffer can be retrieved from the camera object for processing. The buffer
-    and additional image data are collected in a grab result. The grab result is
-    held by a smart pointer after retrieval. The buffer is automatically reused
-    when explicitly released or when the smart pointer object is destroyed.
-*/
-
 // Include files to use the pylon API.
 #include <pylon/PylonIncludes.h>
-#ifdef PYLON_WIN_BUILD
-#    include <pylon/PylonGUI.h>
-#endif
+
 
 #include <opencv2/opencv.hpp>
 
@@ -40,11 +18,11 @@ using namespace Pylon;
 using namespace std;
 
 // Number of images to be grabbed.
-static const uint32_t c_countOfImagesToGrab = 1000;
+// static const uint32_t c_countOfImagesToGrab = 1000;
 
 
-const char Filename[] = "CamDefaultNodeMap.pfs";
-const char UXDCFilename[] = "UXDCNodeMap.pfs";
+// const char Filename[] = "CamDefaultNodeMap.pfs";
+// const char UXDCFilename[] = "UXDCNodeMap.pfs";
 
 const std::string dateiname = "MeineDatei.pfs";
 const std::string loaddatei = "Gibtesnicht.pfs";
@@ -59,15 +37,30 @@ int main(int argc, char* argv[])
     //imshow("Display Image", image);
     //waitKey(0);	
 
+    bool ShowGrabbedImage = false;
     
+    // The exit code of the sample application.
+    int exitCode = 0;
+    
+    if (argc > 1)
     {
+        if (argv[2] == "-show")
+        {
+            std::cout << "Argument -show gefunden" << std::endl;
+            ShowGrabbedImage = true;
+        }
+    }
+
+    
+    
 	    BaslerCamera usedCamera;
         usedCamera.OpenFirstCamera();
         usedCamera.SaveCamParametersToFile(dateiname);
         usedCamera.SetMandatoryDefaultParameters();
         usedCamera.LoadCamParametersFromFile(loaddatei);
-        usedCamera.UpdateDeviceParameters();
+        usedCamera.UpdateDeviceParameters(true);
         usedCamera.StartGrabbing();
+
         while( cin.get() != '\n');
         CGrabResultPtr ptrMyImage;
         while (usedCamera.CamIsGrabbing())
@@ -100,12 +93,10 @@ int main(int argc, char* argv[])
                 // ptrMyImage.Release();
             }
         }
-    }
+    
 
-	//usedCamera.OpenFirstCamera();
-    // The exit code of the sample application.
-    int exitCode = 0;
 
+/*
     // Before using any pylon methods, the pylon runtime must be initialized. 
      PylonInitialize();
 
@@ -258,6 +249,6 @@ cout << "GetInternalName: " << camera.GetDeviceInfo().GetInternalName() << endl;
 
     // Releases all pylon resources. 
     PylonTerminate();  
-
+*/
     return exitCode;
 }
