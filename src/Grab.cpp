@@ -66,7 +66,7 @@ int main(int argc, char* argv[])
         usedCamera.SaveCamParametersToFile(dateiname);
         usedCamera.SetMandatoryDefaultParameters();
         usedCamera.LoadCamParametersFromFile(loaddatei);
-        usedCamera.SaveDeviceParameters();
+        usedCamera.UpdateDeviceParameters();
         usedCamera.StartGrabbing();
         while( cin.get() != '\n');
         CGrabResultPtr ptrMyImage;

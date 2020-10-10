@@ -28,7 +28,7 @@ class BaslerCamera
         void StartGrabbing();
         bool CamIsGrabbing();
         void GetGrabbedImage(Pylon::CGrabResultPtr &ptrImagePointer);
-        void SaveDeviceParameters();
+        void UpdateDeviceParameters(bool bUpdateAll = false);
 
 
 
