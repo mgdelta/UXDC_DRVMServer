@@ -1,7 +1,8 @@
 #ifndef BASLERCAMERA
 #define BASLERCAMERA
 
-#include "CamParameters.h"
+#include "DeviceParameters.h"
+#include "GeneralParameters.h"
 #include <pylon/PylonIncludes.h>
 
 
@@ -14,7 +15,7 @@ class BaslerCamera
         const int max_framerate = 30;
         CamDeviceParameters cCamParams;
         CamGeneralParameters cCamGenParams;
-        CamImageParameters cCamImgParams;
+        
 
     public:
         BaslerCamera();

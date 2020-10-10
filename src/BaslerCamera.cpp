@@ -122,6 +122,9 @@ void BaslerCamera::SaveDeviceParameters()
     cCamGenParams.SetLightPreset(static_cast<std::string>(Pylon::CEnumParameter(nodemap, "LightSourcePreset").ToString()));
     cCamGenParams.SetUSBSpeedMode(static_cast<std::string>(Pylon::CEnumParameter(nodemap, "BslUSBSpeedMode").ToString()));
 
+    cCamGenParams.SetReverseX(Pylon::CBooleanParameter(nodemap, "ReverseX").GetValue());
+    cCamGenParams.SetReverseY(Pylon::CBooleanParameter(nodemap, "ReverseY").GetValue());
+
 
     double gain_db = Pylon::CFloatParameter(nodemap, "Gain").GetValue();//update
     double gain_lowerlimit = Pylon::CFloatParameter(nodemap, "AutoGainLowerLimit").GetValue();//update
@@ -137,8 +140,8 @@ void BaslerCamera::SaveDeviceParameters()
     int ROI_height = Pylon::CIntegerParameter(nodemap, "Height").GetValue();
     int ROI_offsetx = Pylon::CIntegerParameter(nodemap, "OffsetX").GetValue();
     int ROI_offsety = Pylon::CIntegerParameter(nodemap, "OffsetY").GetValue();
-    bool reverse_x = Pylon::CBooleanParameter(nodemap, "ReverseX").GetValue();
-    bool reverse_y = Pylon::CBooleanParameter(nodemap, "ReverseY").GetValue();
+    // bool reverse_x = Pylon::CBooleanParameter(nodemap, "ReverseX").GetValue();
+    // bool reverse_y = Pylon::CBooleanParameter(nodemap, "ReverseY").GetValue();
 
     double exposure_us = Pylon::CFloatParameter(nodemap, "ExposureTime").GetValue();//update
     double exposure_lowerlimit = Pylon::CFloatParameter(nodemap, "AutoExposureTimeLowerLimit").GetValue();
