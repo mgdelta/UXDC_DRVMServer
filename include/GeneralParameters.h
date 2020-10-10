@@ -46,6 +46,29 @@ class CamGeneralParameters
         const bool GetReverseX();
         const bool GetReverseY();
 
+        const double GetGain();
+        const double GetGainLowerLimit();
+        const double GetGainUpperLimit();
+        const double GetGamma();
+        const double GetExposureTime();
+        const double GetExposureLowerLimit();
+        const double GetExposureUpperLimit();
+        const double GetFPSLimit();
+        const double GetFPSActual();
+        const double GetBrightness();
+        const double GetContrast();
+        const double GetBalanceRatio();
+
+        const int GetSensorWidth();
+        const int GetSensorHeight();
+        const int GetSensorROIWidthMax();
+        const int GetSensorROIHeightMax();
+        const int GetROIWidth();
+        const int GetROIHeight();
+        const int GetROIOffsetX();
+        const int GetROIOffsetY();
+        const int GetLinkspeed();
+        const int GetSpeedlimit();
 
         void SetGainAutoMode(const std::string& strValue);
         void SetPixelFormat(const std::string& strValue);
@@ -56,8 +79,29 @@ class CamGeneralParameters
         void SetReverseX(const bool& bValue);
         void SetReverseY(const bool& bValue);
 
+        void SetGain(const double& dValue);
+        void SetGainLowerLimit(const double& dValue);
+        void SetGainUpperLimit(const double& dValue);
+        void SetGamma(const double& dValue);
+        void SetExposureTime(const double& dValue);
+        void SetExposureLowerLimit(const double& dValue);
+        void SetExposureUpperLimit(const double& dValue);
+        void SetFPSLimit(const double& dValue);
+        void SetFPSActual(const double& dValue);
+        void SetBrightness(const double& dValue);
+        void SetContrast(const double& dValue);
+        void SetBalanceRatio(const double& dValue);
 
-
+        void SetSensorWidth(const int& iValue);
+        void SetSensorHeight(const int& iValue);
+        void SetSensorROIWidthMax(const int& iValue);
+        void SetSensorROIHeightMax(const int& iValue);
+        void SetROIWidth(const int& iValue);
+        void SetROIHeight(const int& iValue);
+        void SetROIOffsetX(const int& iValue);
+        void SetROIOffsetY(const int& iValue);
+        void SetLinkspeed(const int& iValue);
+        void SetSpeedlimit(const int& iValue);
 };
 
 
