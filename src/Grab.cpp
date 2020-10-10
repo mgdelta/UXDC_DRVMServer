@@ -170,6 +170,8 @@ cout << "GetInternalName: " << camera.GetDeviceInfo().GetInternalName() << endl;
 
 
 
+
+
             // Create a sample image.
             CPylonImage imageRGB8packed = SampleImageCreator::CreateMandelbrotFractal( PixelType_RGB8packed, 1600, 1200);
             //ShowImage( imageRGB8packed, "Source image.");

@@ -113,4 +113,47 @@ void BaslerCamera::SaveDeviceParameters()
     cCamParams.SetFullName(static_cast<std::string>(camera->GetDeviceInfo().GetFullName()));
     cCamParams.SetVendorName(static_cast<std::string>(camera->GetDeviceInfo().GetVendorName()));
     cCamParams.SetDeviceGUID(static_cast<std::string>(camera->GetDeviceInfo().GetDeviceGUID()));
+
+    // save start & live parameters at startup
+
+    double gain_db = Pylon::CFloatParameter(nodemap, "Gain").GetValue();//update
+    double gain_lowerlimit = Pylon::CFloatParameter(nodemap, "AutoGainLowerLimit").GetValue();//update
+    double gain_upperlimit = Pylon::CFloatParameter(nodemap, "AutoGainUpperLimit").GetValue();//update
+    double gamma = Pylon::CFloatParameter(nodemap, "Gamma").GetValue();
+
+    int sensor_width = Pylon::CIntegerParameter(nodemap, "SensorWidth").GetValue();
+    int sensor_height = Pylon::CIntegerParameter(nodemap, "SensorHeight").GetValue();
+    int sensor_ROI_widthmax = Pylon::CIntegerParameter(nodemap, "WidthMax").GetValue();
+    int sensor_ROI_heightmax = Pylon::CIntegerParameter(nodemap, "HeightMax").GetValue();
+
+    int ROI_width = Pylon::CIntegerParameter(nodemap, "Width").GetValue();
+    int ROI_height = Pylon::CIntegerParameter(nodemap, "Height").GetValue();
+    int ROI_offsetx = Pylon::CIntegerParameter(nodemap, "OffsetX").GetValue();
+    int ROI_offsety = Pylon::CIntegerParameter(nodemap, "OffsetY").GetValue();
+    bool reverse_x = Pylon::CBooleanParameter(nodemap, "ReverseX").GetValue();
+    bool reverse_y = Pylon::CBooleanParameter(nodemap, "ReverseY").GetValue();
+
+    double exposure_us = Pylon::CFloatParameter(nodemap, "ExposureTime").GetValue();//update
+    double exposure_lowerlimit = Pylon::CFloatParameter(nodemap, "AutoExposureTimeLowerLimit").GetValue();
+    double exposure_upperlimit = Pylon::CFloatParameter(nodemap, "AutoExposureTimeUpperLimit").GetValue();
+    double fps_limit = Pylon::CFloatParameter(nodemap, "AcquisitionFrameRate").GetValue();
+    double fps_actual = Pylon::CFloatParameter(nodemap, "ResultingFrameRate").GetValue();//update
+
+    double brightness = Pylon::CFloatParameter(nodemap, "BslBrightness").GetValue();
+    double contrast = Pylon::CFloatParameter(nodemap, "BslContrast").GetValue();
+    double balanceratio = Pylon::CFloatParameter(nodemap, "BalanceRatio").GetValue();//update
+
+    int linkspeed_bps = Pylon::CIntegerParameter(nodemap, "DeviceLinkSpeed").GetValue();
+    int speedlimit_Bps = Pylon::CIntegerParameter(nodemap, "DeviceLinkThroughputLimit").GetValue();
+
+    std::string gainauto = static_cast<std::string>(Pylon::CEnumParameter(nodemap, "GainAuto").ToString());
+    std::string pixelformat = static_cast<std::string>(Pylon::CEnumParameter(nodemap, "PixelFormat").ToString());
+    std::string exposureauto = static_cast<std::string>(Pylon::CEnumParameter(nodemap, "ExposureAuto").ToString());
+    std::string exposuremode = static_cast<std::string>(Pylon::CEnumParameter(nodemap, "ExposureMode").ToString());
+    std::string lightpreset = static_cast<std::string>(Pylon::CEnumParameter(nodemap, "LightSourcePreset").ToString());
+
+    std::string usbspeed = static_cast<std::string>(Pylon::CEnumParameter(nodemap, "BslUSBSpeedMode").ToString());
+
+    std::cout << "Hallo";
+
 }
