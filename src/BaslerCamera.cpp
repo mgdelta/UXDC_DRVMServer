@@ -115,6 +115,13 @@ void BaslerCamera::SaveDeviceParameters()
     cCamParams.SetDeviceGUID(static_cast<std::string>(camera->GetDeviceInfo().GetDeviceGUID()));
 
     // save start & live parameters at startup
+    cCamGenParams.SetGainAutoMode(static_cast<std::string>(Pylon::CEnumParameter(nodemap, "GainAuto").ToString()));
+    cCamGenParams.SetPixelFormat(static_cast<std::string>(Pylon::CEnumParameter(nodemap, "PixelFormat").ToString()));
+    cCamGenParams.SetExposureAuto(static_cast<std::string>(Pylon::CEnumParameter(nodemap, "ExposureAuto").ToString()));
+    cCamGenParams.SetExposureMode(static_cast<std::string>(Pylon::CEnumParameter(nodemap, "ExposureMode").ToString()));
+    cCamGenParams.SetLightPreset(static_cast<std::string>(Pylon::CEnumParameter(nodemap, "LightSourcePreset").ToString()));
+    cCamGenParams.SetUSBSpeedMode(static_cast<std::string>(Pylon::CEnumParameter(nodemap, "BslUSBSpeedMode").ToString()));
+
 
     double gain_db = Pylon::CFloatParameter(nodemap, "Gain").GetValue();//update
     double gain_lowerlimit = Pylon::CFloatParameter(nodemap, "AutoGainLowerLimit").GetValue();//update
@@ -146,13 +153,13 @@ void BaslerCamera::SaveDeviceParameters()
     int linkspeed_bps = Pylon::CIntegerParameter(nodemap, "DeviceLinkSpeed").GetValue();
     int speedlimit_Bps = Pylon::CIntegerParameter(nodemap, "DeviceLinkThroughputLimit").GetValue();
 
-    std::string gainauto = static_cast<std::string>(Pylon::CEnumParameter(nodemap, "GainAuto").ToString());
-    std::string pixelformat = static_cast<std::string>(Pylon::CEnumParameter(nodemap, "PixelFormat").ToString());
-    std::string exposureauto = static_cast<std::string>(Pylon::CEnumParameter(nodemap, "ExposureAuto").ToString());
-    std::string exposuremode = static_cast<std::string>(Pylon::CEnumParameter(nodemap, "ExposureMode").ToString());
-    std::string lightpreset = static_cast<std::string>(Pylon::CEnumParameter(nodemap, "LightSourcePreset").ToString());
+    // std::string gainauto = static_cast<std::string>(Pylon::CEnumParameter(nodemap, "GainAuto").ToString());
+    // std::string pixelformat = static_cast<std::string>(Pylon::CEnumParameter(nodemap, "PixelFormat").ToString());
+    // std::string exposureauto = static_cast<std::string>(Pylon::CEnumParameter(nodemap, "ExposureAuto").ToString());
+    // std::string exposuremode = static_cast<std::string>(Pylon::CEnumParameter(nodemap, "ExposureMode").ToString());
+    // std::string lightpreset = static_cast<std::string>(Pylon::CEnumParameter(nodemap, "LightSourcePreset").ToString());
 
-    std::string usbspeed = static_cast<std::string>(Pylon::CEnumParameter(nodemap, "BslUSBSpeedMode").ToString());
+    // std::string usbspeed = static_cast<std::string>(Pylon::CEnumParameter(nodemap, "BslUSBSpeedMode").ToString());
 
     std::cout << "Hallo";
 
