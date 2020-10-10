@@ -83,10 +83,8 @@ void BaslerCamera::StartGrabbing()
         // Error handling.
         std::cerr << "An exception occurred." << std::endl << e.GetDescription() << std::endl;
         }
-        
-
-
 }      
+
 bool BaslerCamera::CamIsGrabbing()
 {
     return camera->IsGrabbing();
@@ -103,5 +101,4 @@ void BaslerCamera::GetGrabbedImage(Pylon::CGrabResultPtr &ptrImagePointer)
         // Error handling.
         std::cerr << "An exception occurred." << std::endl << e.GetDescription() << std::endl;
         }  
-
 }

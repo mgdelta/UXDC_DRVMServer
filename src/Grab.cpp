@@ -58,6 +58,8 @@ int main(int argc, char* argv[])
     //namedWindow("Display Image", WINDOW_AUTOSIZE );
     //imshow("Display Image", image);
     //waitKey(0);	
+
+    /*
     {
 	    BaslerCamera usedCamera;
         usedCamera.OpenFirstCamera();
@@ -98,7 +100,7 @@ int main(int argc, char* argv[])
             }
         }
     }
-
+*/
 	//usedCamera.OpenFirstCamera();
     // The exit code of the sample application.
     int exitCode = 0;
