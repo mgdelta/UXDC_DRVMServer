@@ -1,32 +1,20 @@
 // Include files to use the pylon API.
 #include <pylon/PylonIncludes.h>
-
-
 #include <opencv2/opencv.hpp>
 
-//#include "SampleImageCreator.h"
-//#include <fstream>
-
 #include "BaslerCamera.h"
-
-//using namespace cv;
-
-// Namespace for using pylon objects.
-//using namespace Pylon;
-
-// Namespace for using cout.
-//using namespace std;
+#include "GeneralParameters.h"
 
 #include <ecal/ecal.h>
 #include <ecal/msg/protobuf/publisher.h>
 
-const std::string file_originalcamsettings = "OriginalCamDefaultSettings.pfs";
-const std::string file_drvmsettings = "UXDC-DRVM-CamSettings.pfs";
-
 #include "UXDC_DRVM.pb.h"    
 
 #include <map>
-#include "GeneralParameters.h"
+
+const std::string file_originalcamsettings = "OriginalCamDefaultSettings.pfs";
+const std::string file_drvmsettings = "UXDC-DRVM-CamSettings.pfs";
+
 
 int main(int argc, char* argv[])
 {
@@ -119,7 +107,7 @@ int main(int argc, char* argv[])
     msg_videostream.set_allocated_mdeviceinfo(&msg_deviceinfo);
     msg_videostream.set_allocated_mimagesettings(&msg_imagesettings);
     msg_videostream.set_allocated_msensorsettings(&msg_sensorsettings);
-msg_videostream.set_allocated_mgrabbedimage(&msg_grabbedimage);
+    msg_videostream.set_allocated_mgrabbedimage(&msg_grabbedimage);
 
     int counter = 0;
     // endless loop for grabbing images
@@ -137,25 +125,15 @@ msg_videostream.set_allocated_mgrabbedimage(&msg_grabbedimage);
             // Access the image data.
             const uint8_t *pImageBuffer = (uint8_t *) ptrMyImage->GetBuffer();
 
-            // int iFrameNumber = ptrMyImage->GetImageNumber();
-            // int iTimestamp = ptrMyImage->GetTimeStamp();
-//            std::cout << "Frame No: " << iFrameNumber << std::endl;
             
             // Convert Basler Image to BGR8 Standard Image and send it away
             formatConverter.Convert(pylonImage, ptrMyImage);
 
-            // int iImageWidth = pylonImage.GetWidth();
-            // int iImageHeight = pylonImage.GetHeight();
-            // int iImageSizeBytes = pylonImage.GetImageSize();
-            //std::cout << "Imagesize " << iImageSizeBytes << std::endl;
-
             // Convert Image to an openCV Matrix (for jpeg compression and displaying)
             cv::Mat image_matrix = cv::Mat(pylonImage.GetHeight(), pylonImage.GetWidth(), CV_8UC3, (uint8_t *)pylonImage.GetBuffer());
 
-
             std::vector<uchar> jpeg_image;
             bool erfolgreich = cv::imencode(".jpg", image_matrix, jpeg_image);
-            // cout << "JPEG SIZE " << jpeg_image.size() << endl;
 
             // Mat dst=imdecode(jpeg_image,1);
             // namedWindow("Test", WINDOW_AUTOSIZE);
@@ -187,8 +165,5 @@ msg_videostream.set_allocated_mgrabbedimage(&msg_grabbedimage);
         }
     }
     
-
-
-
     return exitCode;
 }
