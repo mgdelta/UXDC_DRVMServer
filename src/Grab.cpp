@@ -25,7 +25,7 @@ const std::string file_drvmsettings = "UXDC-DRVM-CamSettings.pfs";
 int main(int argc, char* argv[])
 {
 
-    bool ShowGrabbedImage = true;
+    bool ShowGrabbedImage = false;
     
     // The exit code of the sample application.
     int exitCode = 0;
@@ -80,14 +80,23 @@ int main(int argc, char* argv[])
             int iImageWidth = pylonImage.GetWidth();
             int iImageHeight = pylonImage.GetHeight();
             int iImageSizeBytes = pylonImage.GetImageSize();
-
+            cout << "Imagesize " << iImageSizeBytes << endl;
 
             // Convert Image to an openCV Matrix (for jpeg compression and displaying)
             Mat image_matrix = Mat(pylonImage.GetHeight(), pylonImage.GetWidth(), CV_8UC3, (uint8_t *)pylonImage.GetBuffer());
 
-            
 
-                
+            std::vector<uchar> jpeg_image;
+            bool erfolgreich = imencode(".jpg", image_matrix, jpeg_image);
+            // cout << "JPEG SIZE " << jpeg_image.size() << endl;
+
+            // Mat dst=imdecode(jpeg_image,1);
+            // namedWindow("Test", WINDOW_AUTOSIZE);
+            // imshow("Test",dst);
+            // waitKey(1);
+            
+            
+            
             if (ShowGrabbedImage)    
             {
                 namedWindow("Digital Rear View Mirror Live View", WINDOW_AUTOSIZE);
