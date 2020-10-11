@@ -4,6 +4,7 @@
 #include "DeviceParameters.h"
 #include "GeneralParameters.h"
 #include <pylon/PylonIncludes.h>
+#include <map>
 
 
 class BaslerCamera
@@ -19,7 +20,7 @@ class BaslerCamera
 
     public:
         BaslerCamera();
-                ~BaslerCamera();
+        ~BaslerCamera();
 
         void OpenFirstCamera();
         void SaveCamParametersToFile(std::string filename);
@@ -30,16 +31,9 @@ class BaslerCamera
         void GetGrabbedImage(Pylon::CGrabResultPtr &ptrImagePointer);
         void UpdateDeviceParameters(bool bUpdateAll = false);
 
+        std::map<std::string, std::string> GetDeviceInfoMap();
+        CamGeneralParameters* GetGeneralParametersPtr();
 
-
-
-    struct ImageParameter{
-        int gain;
-        int exposuretime;
-        float framerate;
-        int brightness;
-        int contrast;
-    };
 };
 
 #endif

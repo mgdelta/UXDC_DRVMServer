@@ -155,3 +155,21 @@ void BaslerCamera::UpdateDeviceParameters(bool bUpdateAll)
     cCamGenParams.SetBalanceRatio(Pylon::CFloatParameter(nodemap, "BalanceRatio").GetValue());
 
 }
+
+std::map<std::string, std::string> BaslerCamera::GetDeviceInfoMap()
+{
+    std::map<std::string, std::string> mapDeviceInfo;
+    mapDeviceInfo.insert(std::make_pair("ModelName", cCamParams.GetModelName()));
+    mapDeviceInfo.insert(std::make_pair("SerialNumber", cCamParams.GetSerialNumber()));
+    mapDeviceInfo.insert(std::make_pair("DeviceFactory", cCamParams.GetDeviceFactory()));
+    mapDeviceInfo.insert(std::make_pair("FriendlyName", cCamParams.GetFriendlyName()));
+    mapDeviceInfo.insert(std::make_pair("FullName", cCamParams.GetFullName()));
+    mapDeviceInfo.insert(std::make_pair("VendorName", cCamParams.GetVendorName()));
+    mapDeviceInfo.insert(std::make_pair("DeviceGUID", cCamParams.GetDeviceGUID()));
+
+    return mapDeviceInfo;
+}
+CamGeneralParameters* BaslerCamera::GetGeneralParametersPtr()
+{
+    return &cCamGenParams;
+}
