@@ -18,14 +18,14 @@ using namespace Pylon;
 using namespace std;
 
 
-const std::string dateiname = "MeineDatei.pfs";
-const std::string loaddatei = "Gibtesnicht.pfs";
+const std::string file_originalcamsettings = "OriginalCamDefualtSettings.pfs";
+const std::string file_drvmsettings = "UXDC-DRVM-CamSettings.pfs";
     
 
 int main(int argc, char* argv[])
 {
 
-    bool ShowGrabbedImage = false;
+    bool ShowGrabbedImage = true;
     
     // The exit code of the sample application.
     int exitCode = 0;
@@ -42,9 +42,9 @@ int main(int argc, char* argv[])
     // Prepare everything for camera usage
     BaslerCamera usedCamera;
     usedCamera.OpenFirstCamera();
-    usedCamera.SaveCamParametersToFile(dateiname);
+    usedCamera.SaveCamParametersToFile(file_originalcamsettings);
     usedCamera.SetMandatoryDefaultParameters();
-    usedCamera.LoadCamParametersFromFile(loaddatei);
+    usedCamera.LoadCamParametersFromFile(file_drvmsettings);
     usedCamera.UpdateDeviceParameters(true);
     usedCamera.StartGrabbing();
 
@@ -69,24 +69,29 @@ int main(int argc, char* argv[])
             
             // Access the image data.
             const uint8_t *pImageBuffer = (uint8_t *) ptrMyImage->GetBuffer();
+
+            int iFrameNumber = ptrMyImage->GetImageNumber();
+            int iTimestamp = ptrMyImage->GetTimeStamp();
+            cout << "Frame No: " << iFrameNumber << endl;
             
-                
-            //cout << "SizeX: " << ptrGrabResult->GetWidth() << endl;
-            //cout << "SizeY: " << ptrGrabResult->GetHeight() << endl;
-            //cout << "Timestamp: " << ptrGrabResult->GetTimeStamp() << endl;
-            //cout << "Size Bytes: " << ptrGrabResult->GetImageSize() << endl;
-            //cout << "Frame No: " << ptrMyImage->GetImageNumber() << endl;
+            // Convert Basler Image to BGR8 Standard Image and send it away
+            formatConverter.Convert(pylonImage, ptrMyImage);
+
+            int iImageWidth = pylonImage.GetWidth();
+            int iImageHeight = pylonImage.GetHeight();
+            int iImageSizeBytes = pylonImage.GetImageSize();
+
+
+            // Convert Image to an openCV Matrix (for jpeg compression and displaying)
+            Mat image_matrix = Mat(pylonImage.GetHeight(), pylonImage.GetWidth(), CV_8UC3, (uint8_t *)pylonImage.GetBuffer());
 
             
 
                 
             if (ShowGrabbedImage)    
             {
-                formatConverter.Convert(pylonImage, ptrMyImage);
-
-                Mat camimage = Mat(1200,1600,CV_8UC3, (uint8_t *) pylonImage.GetBuffer());
                 namedWindow("Digital Rear View Mirror Live View", WINDOW_AUTOSIZE);
-                imshow("Digital Rear View Mirror Live View", camimage);
+                imshow("Digital Rear View Mirror Live View", image_matrix);
                 waitKey(1);
             }
         }
