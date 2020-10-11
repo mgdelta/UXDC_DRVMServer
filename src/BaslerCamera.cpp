@@ -74,9 +74,17 @@ void BaslerCamera::StartGrabbing()
         // sets up free-running continuous acquisition.
         //camera.StartGrabbing( c_countOfImagesToGrab);
         
-        camera->StartGrabbing();
-
+        try
+        {
+            camera->StartGrabbing();
+        }
+        catch(const Pylon::GenericException e)
+        {
+        // Error handling.
+        std::cerr << "An exception occurred." << std::endl << e.GetDescription() << std::endl;
+        }
 }      
+
 bool BaslerCamera::CamIsGrabbing()
 {
     return camera->IsGrabbing();
@@ -84,8 +92,66 @@ bool BaslerCamera::CamIsGrabbing()
 
 void BaslerCamera::GetGrabbedImage(Pylon::CGrabResultPtr &ptrImagePointer)
 {
-    // Wait for an image and then retrieve it. A timeout of 5000 ms is used.
-    camera->RetrieveResult( 5000, ptrImagePointer, Pylon::TimeoutHandling_ThrowException);
-    
+    try {
+        // Wait for an image and then retrieve it. A timeout of 5000 ms is used.
+        camera->RetrieveResult( 5000, ptrImagePointer, Pylon::TimeoutHandling_ThrowException);
+    }
+          catch(const Pylon::GenericException e)
+        {
+        // Error handling.
+        std::cerr << "An exception occurred." << std::endl << e.GetDescription() << std::endl;
+        }  
+}
+
+void BaslerCamera::UpdateDeviceParameters(bool bUpdateAll)
+{
+    if (bUpdateAll)
+    {
+        // one time parameters of device, never changed during operation
+        cCamParams.SetModelName(static_cast<std::string>(camera->GetDeviceInfo().GetModelName()));
+        cCamParams.SetSerialNumber(static_cast<std::string>(camera->GetDeviceInfo().GetSerialNumber()));
+        cCamParams.SetDeviceFactory(static_cast<std::string>(camera->GetDeviceInfo().GetDeviceFactory()));
+        cCamParams.SetFriendlyName(static_cast<std::string>(camera->GetDeviceInfo().GetFriendlyName()));
+        cCamParams.SetFullName(static_cast<std::string>(camera->GetDeviceInfo().GetFullName()));
+        cCamParams.SetVendorName(static_cast<std::string>(camera->GetDeviceInfo().GetVendorName()));
+        cCamParams.SetDeviceGUID(static_cast<std::string>(camera->GetDeviceInfo().GetDeviceGUID()));
+
+        // save start & live parameters at startup
+        cCamGenParams.SetGainAutoMode(static_cast<std::string>(Pylon::CEnumParameter(nodemap, "GainAuto").ToString()));
+        cCamGenParams.SetPixelFormat(static_cast<std::string>(Pylon::CEnumParameter(nodemap, "PixelFormat").ToString()));
+        cCamGenParams.SetExposureAuto(static_cast<std::string>(Pylon::CEnumParameter(nodemap, "ExposureAuto").ToString()));
+        cCamGenParams.SetExposureMode(static_cast<std::string>(Pylon::CEnumParameter(nodemap, "ExposureMode").ToString()));
+        cCamGenParams.SetLightPreset(static_cast<std::string>(Pylon::CEnumParameter(nodemap, "LightSourcePreset").ToString()));
+        cCamGenParams.SetUSBSpeedMode(static_cast<std::string>(Pylon::CEnumParameter(nodemap, "BslUSBSpeedMode").ToString()));
+
+        cCamGenParams.SetReverseX(Pylon::CBooleanParameter(nodemap, "ReverseX").GetValue());
+        cCamGenParams.SetReverseY(Pylon::CBooleanParameter(nodemap, "ReverseY").GetValue());
+
+        cCamGenParams.SetGamma(Pylon::CFloatParameter(nodemap, "Gamma").GetValue());
+        cCamGenParams.SetFPSLimit(Pylon::CFloatParameter(nodemap, "AcquisitionFrameRate").GetValue());
+        cCamGenParams.SetBrightness(Pylon::CFloatParameter(nodemap, "BslBrightness").GetValue());
+        cCamGenParams.SetContrast(Pylon::CFloatParameter(nodemap, "BslContrast").GetValue());
+        cCamGenParams.SetExposureLowerLimit(Pylon::CFloatParameter(nodemap, "AutoExposureTimeLowerLimit").GetValue());
+        cCamGenParams.SetExposureUpperLimit(Pylon::CFloatParameter(nodemap, "AutoExposureTimeUpperLimit").GetValue());
+
+        cCamGenParams.SetSensorWidth(Pylon::CIntegerParameter(nodemap, "SensorWidth").GetValue());
+        cCamGenParams.SetSensorHeight(Pylon::CIntegerParameter(nodemap, "SensorHeight").GetValue());
+        cCamGenParams.SetSensorROIWidthMax(Pylon::CIntegerParameter(nodemap, "WidthMax").GetValue());
+        cCamGenParams.SetSensorROIHeightMax(Pylon::CIntegerParameter(nodemap, "HeightMax").GetValue());
+        cCamGenParams.SetROIWidth(Pylon::CIntegerParameter(nodemap, "Width").GetValue());
+        cCamGenParams.SetROIHeight(Pylon::CIntegerParameter(nodemap, "Height").GetValue());
+        cCamGenParams.SetROIOffsetX(Pylon::CIntegerParameter(nodemap, "OffsetX").GetValue());
+        cCamGenParams.SetROIOffsetY(Pylon::CIntegerParameter(nodemap, "OffsetY").GetValue());
+        cCamGenParams.SetLinkspeed(Pylon::CIntegerParameter(nodemap, "DeviceLinkSpeed").GetValue());
+        cCamGenParams.SetSpeedlimit(Pylon::CIntegerParameter(nodemap, "DeviceLinkThroughputLimit").GetValue());
+    }
+
+    // Update these values every time
+    cCamGenParams.SetGain(Pylon::CFloatParameter(nodemap, "Gain").GetValue());
+    cCamGenParams.SetGainLowerLimit(Pylon::CFloatParameter(nodemap, "AutoGainLowerLimit").GetValue());
+    cCamGenParams.SetGainUpperLimit(Pylon::CFloatParameter(nodemap, "AutoGainUpperLimit").GetValue());
+    cCamGenParams.SetExposureTime(Pylon::CFloatParameter(nodemap, "ExposureTime").GetValue());
+    cCamGenParams.SetFPSActual(Pylon::CFloatParameter(nodemap, "ResultingFrameRate").GetValue());
+    cCamGenParams.SetBalanceRatio(Pylon::CFloatParameter(nodemap, "BalanceRatio").GetValue());
 
 }
