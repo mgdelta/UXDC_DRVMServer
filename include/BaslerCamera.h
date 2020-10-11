@@ -32,6 +32,7 @@ class BaslerCamera
         void UpdateDeviceParameters(bool bUpdateAll = false);
 
         std::map<std::string, std::string> GetDeviceInfoMap();
+        const CamGeneralParameters* GetGeneralParametersPtr();
 
 
 

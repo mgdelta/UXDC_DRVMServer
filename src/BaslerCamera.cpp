@@ -169,3 +169,7 @@ std::map<std::string, std::string> BaslerCamera::GetDeviceInfoMap()
 
     return mapDeviceInfo;
 }
+const CamGeneralParameters* BaslerCamera::GetGeneralParametersPtr()
+{
+    return &cCamGenParams;
+}

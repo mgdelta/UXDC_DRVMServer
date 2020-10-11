@@ -34,14 +34,62 @@ package UXDC.DRVM;
 
 message CameraDeviceInfo
 {
-  string VendorName = 1;
-  string ModelName = 2;
-  string FullName = 3;
-  string FriendlyName = 4;
-  string DeviceFactory = 5;
-  string SerialNumber = 6;
-  string DeviceGUID = 7;
+  string VendorName     = 1;
+  string ModelName      = 2;
+  string FullName       = 3;
+  string FriendlyName   = 4;
+  string DeviceFactory  = 5;
+  string SerialNumber   = 6;
+  string DeviceGUID     = 7;
 }
+message ImageSettings
+{
+  double Gain_DB              = 1;
+  double Gain_LowerLimit      = 2;
+  double Gain_UpperLimit      = 3;
+  string GainAuto             = 4;
+  double Gamma                = 5;
+  double Brightness           = 6;
+  double Contrast             = 7;
+  double Balanceratio         = 8;
+  string LightPreset          = 9;
+  string PixelFormat          = 10;
+  double Exposure_us          = 11;
+  double Exposure_LowerLimit  = 12;
+  double Exposure_UpperLimit  = 13;
+  string ExposureMode         = 14;
+  string ExposureAuto         = 15;
+}
+message SensorSettings
+{
+  int64 Sensor_Width          = 1;
+  int64 Sensor_Height         = 2;
+  int64 Sensor_ROI_WidthMax   = 3;
+  int64 Sensor_ROI_HeightMax  = 4;
+  int64 ROI_Width             = 5;
+  int64 ROI_Height            = 6;
+  int64 ROI_OffsetX           = 7;
+  int64 ROI_OffsetY           = 8;
+  string UsbSpeed             = 9;
+  int64 Linkspeed_bps         = 10;
+  int64 Speedlimit_Bps        = 11;
+  double FPS_Limit            = 12; 
+}
+
+message GrabbedImage
+{
+  int64 Size_x            = 1;
+  int64 Size_y            = 2;
+  bool Reverse_x          = 3;
+  bool Reverse_y          = 4;
+  string Compression      = 5;
+  double FPS_actual       = 6;
+  int64 Framenumber       = 7;
+  int64 ImageSize         = 8;
+  int64 Timestamp         = 9;
+  bytes Payload           = 10;
+}
+
 
 
 message DRVM_Status
@@ -51,5 +99,8 @@ message DRVM_Status
 
 message DRVM_VideoStream
 {
-  CameraDeviceInfo mDeviceInfo = 1;  
+  CameraDeviceInfo mDeviceInfo    = 1;
+  ImageSettings mImageSettings    = 2;
+  SensorSettings mSensorSettings  = 3;
+  GrabbedImage mGrabbedImage      = 4;  
 }

@@ -26,6 +26,8 @@ const std::string file_drvmsettings = "UXDC-DRVM-CamSettings.pfs";
 #include "UXDC_DRVM.pb.h"    
 
 #include <map>
+#include "GeneralParameters.h"
+
 int main(int argc, char* argv[])
 {
 	eCAL::Initialize(0, 0, "UXDC_DRVMServer");
@@ -78,6 +80,10 @@ int main(int argc, char* argv[])
     msg_deviceinfo.set_modelname(mapDeviceInfo.find("ModelName")->second);
     msg_deviceinfo.set_serialnumber(mapDeviceInfo.find("SerialNumber")->second);
     msg_deviceinfo.set_vendorname(mapDeviceInfo.find("VendorName")->second);
+
+    const CamGeneralParameters* ptrGeneralParameters = usedCamera.GetGeneralParametersPtr();
+    
+
 
     msg_videostream.set_allocated_mdeviceinfo(&msg_deviceinfo);
 
