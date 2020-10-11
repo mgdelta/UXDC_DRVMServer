@@ -18,7 +18,7 @@ using namespace Pylon;
 using namespace std;
 
 
-const std::string file_originalcamsettings = "OriginalCamDefualtSettings.pfs";
+const std::string file_originalcamsettings = "OriginalCamDefaultSettings.pfs";
 const std::string file_drvmsettings = "UXDC-DRVM-CamSettings.pfs";
     
 
