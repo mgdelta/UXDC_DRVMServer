@@ -30,13 +30,12 @@ include_directories(
   /opt/pylon/include )
 
 
-#get_filename_component(SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR} ABSOLUTE)
+get_filename_component(SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR} ABSOLUTE)
 #message(STATUS "Variable SRC_PATH: ${SRC_DIR}")
-#set(PROTO_IDL_DIR ${SRC_DIR}/protobuf)
-#set(PROTO_IDL_FILES
-#	${PROTO_IDL_DIR}/IAA_HaloSteeringWheel.proto
-#	${PROTO_IDL_DIR}/UXDC_Halo.proto
-#)
+set(PROTO_IDL_DIR ${SRC_DIR}/protobuf)
+set(PROTO_IDL_FILES
+	${PROTO_IDL_DIR}/UXDC_DRVM.proto
+)
 
 
 
@@ -45,7 +44,7 @@ include_directories(
 #message(STATUS "Proto IDL dir: ${PROTO_IDL_DIR}")
 #message(STATUS "Proto IDL files: ${PROTO_IDL_FILES}")
 
-#PROTOBUF_GENERATE_CPP_EXT(PROTO_SRC_FILES PROTO_HDR_FILES PROTO_INCLUDE_DIRS ${PROTO_IDL_DIR} ${PROTO_IDL_FILES})
+PROTOBUF_GENERATE_CPP_EXT(PROTO_SRC_FILES PROTO_HDR_FILES PROTO_INCLUDE_DIRS ${PROTO_IDL_DIR} ${PROTO_IDL_FILES})
 #message(STATUS "Generated Protos")
 #message(STATUS "PROTO_SRC_FILES are: ${PROTO_SRC_FILES}")
 #message(STATUS "PROTO_HDR_FILES are: ${PROTO_HDR_FILES}")
@@ -59,14 +58,14 @@ link_directories(/opt/pylon/lib)
 
 add_executable(${PROJECT_NAME}
 	${SRC_FILES}
-#	${PROTO_SRC_FILES}
-#	${PROTO_HDR_FILES}
+	${PROTO_SRC_FILES}
+	${PROTO_HDR_FILES}
 #${CMAKE_CURRENT_SOURCE_DIR}/src/Adafruit_DotStar.cpp
 #${CMAKE_CURRENT_SOURCE_DIR}/src/ecalcomm.cpp
 )
 
 target_include_directories(${PROJECT_NAME} PRIVATE 
-#	${PROTO_INCLUDE_DIRS}/
+	${PROTO_INCLUDE_DIRS}/
 	${CMAKE_CURRENT_SOURCE_DIR}/include/
 #	${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/stb
 #${Boost_INCLUDE_DIRS}

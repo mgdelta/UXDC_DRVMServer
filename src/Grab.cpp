@@ -22,15 +22,17 @@
 
 const std::string file_originalcamsettings = "OriginalCamDefaultSettings.pfs";
 const std::string file_drvmsettings = "UXDC-DRVM-CamSettings.pfs";
-    
+
+#include "UXDC_DRVM.pb.h"    
 
 int main(int argc, char* argv[])
 {
 	eCAL::Initialize(0, 0, "UXDC_DRVMServer");
 	eCAL::Process::SetState(proc_sev_healthy, proc_sev_level1, "I feel good !");
-    // eCAL::protobuf::CPublisher<> pub_img;
+    eCAL::protobuf::CPublisher<UXDC::DRVM::DRVM_Status> pub_status("DRVM_Status");
+    eCAL::protobuf::CPublisher<UXDC::DRVM::DRVM_VideoStream> pub_videostream("DRVM_VideoStream");
 
-
+    UXDC::DRVM::DRVM_Status msg_status;
 
     bool ShowGrabbedImage = false;
     
@@ -62,6 +64,7 @@ int main(int argc, char* argv[])
 	formatConverter.OutputPixelFormat = Pylon::PixelType_BGR8packed;
     Pylon::CPylonImage pylonImage;
 
+    int counter = 0;
     // endless loop for grabbing images
     while (usedCamera.CamIsGrabbing())
     {
@@ -101,7 +104,9 @@ int main(int argc, char* argv[])
             // namedWindow("Test", WINDOW_AUTOSIZE);
             // imshow("Test",dst);
             // waitKey(1);
-            
+            msg_status.set_alive_counter(counter);
+            counter++;
+            pub_status.Send(msg_status);
             
             
             if (ShowGrabbedImage)    
