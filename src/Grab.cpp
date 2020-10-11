@@ -37,6 +37,9 @@ int main(int argc, char* argv[])
 
     UXDC::DRVM::DRVM_Status msg_status;
     UXDC::DRVM::CameraDeviceInfo msg_deviceinfo;
+    UXDC::DRVM::SensorSettings msg_sensorsettings;
+    UXDC::DRVM::ImageSettings msg_imagesettings;
+    UXDC::DRVM::GrabbedImage msg_grabbedimage;
     UXDC::DRVM::DRVM_VideoStream msg_videostream;
 
     bool ShowGrabbedImage = false;
@@ -81,11 +84,41 @@ int main(int argc, char* argv[])
     msg_deviceinfo.set_serialnumber(mapDeviceInfo.find("SerialNumber")->second);
     msg_deviceinfo.set_vendorname(mapDeviceInfo.find("VendorName")->second);
 
-    const CamGeneralParameters* ptrGeneralParameters = usedCamera.GetGeneralParametersPtr();
+    CamGeneralParameters *ptrGeneralParameters = usedCamera.GetGeneralParametersPtr();
     
+    
+    msg_sensorsettings.set_sensor_width(ptrGeneralParameters->GetSensorWidth());
+    msg_sensorsettings.set_sensor_height(ptrGeneralParameters->GetSensorHeight());
+    msg_sensorsettings.set_sensor_roi_widthmax(ptrGeneralParameters->GetSensorROIWidthMax());
+    msg_sensorsettings.set_sensor_roi_heightmax(ptrGeneralParameters->GetSensorROIHeightMax());
+    msg_sensorsettings.set_roi_height(ptrGeneralParameters->GetROIHeight());
+    msg_sensorsettings.set_roi_width(ptrGeneralParameters->GetROIWidth());
+    msg_sensorsettings.set_roi_offsetx(ptrGeneralParameters->GetROIOffsetX());
+    msg_sensorsettings.set_roi_offsety(ptrGeneralParameters->GetROIOffsetY());
+    msg_sensorsettings.set_usbspeed(ptrGeneralParameters->GetUSBSpeedMode());
+    msg_sensorsettings.set_linkspeed_bps(ptrGeneralParameters->GetLinkspeed());
+    msg_sensorsettings.set_speedlimit_bps(ptrGeneralParameters->GetSpeedlimit());
+    msg_sensorsettings.set_fps_limit(ptrGeneralParameters->GetFPSLimit());
 
+    msg_imagesettings.set_gain_db(ptrGeneralParameters->GetGain());
+    msg_imagesettings.set_gain_lowerlimit(ptrGeneralParameters->GetGainLowerLimit());
+    msg_imagesettings.set_gain_upperlimit(ptrGeneralParameters->GetGainUpperLimit());
+    msg_imagesettings.set_gainauto(ptrGeneralParameters->GetGainAutoMode());
+    msg_imagesettings.set_gamma(ptrGeneralParameters->GetGamma());
+    msg_imagesettings.set_brightness(ptrGeneralParameters->GetBrightness());
+    msg_imagesettings.set_contrast(ptrGeneralParameters->GetContrast());
+    msg_imagesettings.set_balanceratio(ptrGeneralParameters->GetBalanceRatio());
+    msg_imagesettings.set_lightpreset(ptrGeneralParameters->GetLightPreset());
+    msg_imagesettings.set_pixelformat(ptrGeneralParameters->GetPixelFormat());
+    msg_imagesettings.set_exposure_us(ptrGeneralParameters->GetExposureTime());
+    msg_imagesettings.set_exposure_lowerlimit(ptrGeneralParameters->GetExposureLowerLimit());
+    msg_imagesettings.set_exposure_upperlimit(ptrGeneralParameters->GetExposureUpperLimit());
+    msg_imagesettings.set_exposuremode(ptrGeneralParameters->GetExposureMode());
+    msg_imagesettings.set_exposureauto(ptrGeneralParameters->GetExposureAuto());
 
     msg_videostream.set_allocated_mdeviceinfo(&msg_deviceinfo);
+    msg_videostream.set_allocated_mimagesettings(&msg_imagesettings);
+    msg_videostream.set_allocated_msensorsettings(&msg_sensorsettings);
 
     int counter = 0;
     // endless loop for grabbing images
@@ -113,7 +146,7 @@ int main(int argc, char* argv[])
             int iImageWidth = pylonImage.GetWidth();
             int iImageHeight = pylonImage.GetHeight();
             int iImageSizeBytes = pylonImage.GetImageSize();
-            std::cout << "Imagesize " << iImageSizeBytes << std::endl;
+            //std::cout << "Imagesize " << iImageSizeBytes << std::endl;
 
             // Convert Image to an openCV Matrix (for jpeg compression and displaying)
             cv::Mat image_matrix = cv::Mat(pylonImage.GetHeight(), pylonImage.GetWidth(), CV_8UC3, (uint8_t *)pylonImage.GetBuffer());

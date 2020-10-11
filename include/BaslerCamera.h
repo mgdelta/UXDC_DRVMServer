@@ -20,7 +20,7 @@ class BaslerCamera
 
     public:
         BaslerCamera();
-                ~BaslerCamera();
+        ~BaslerCamera();
 
         void OpenFirstCamera();
         void SaveCamParametersToFile(std::string filename);
@@ -32,17 +32,8 @@ class BaslerCamera
         void UpdateDeviceParameters(bool bUpdateAll = false);
 
         std::map<std::string, std::string> GetDeviceInfoMap();
-        const CamGeneralParameters* GetGeneralParametersPtr();
+        CamGeneralParameters* GetGeneralParametersPtr();
 
-
-
-    struct ImageParameter{
-        int gain;
-        int exposuretime;
-        float framerate;
-        int brightness;
-        int contrast;
-    };
 };
 
 #endif

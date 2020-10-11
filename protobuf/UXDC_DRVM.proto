@@ -100,7 +100,7 @@ message DRVM_Status
 message DRVM_VideoStream
 {
   CameraDeviceInfo mDeviceInfo    = 1;
-  ImageSettings mImageSettings    = 2;
-  SensorSettings mSensorSettings  = 3;
+  SensorSettings mSensorSettings  = 2;
+  ImageSettings mImageSettings    = 3;
   GrabbedImage mGrabbedImage      = 4;  
 }
