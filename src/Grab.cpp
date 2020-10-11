@@ -17,6 +17,8 @@
 // Namespace for using cout.
 //using namespace std;
 
+#include <ecal/ecal.h>
+#include <ecal/msg/protobuf/publisher.h>
 
 const std::string file_originalcamsettings = "OriginalCamDefaultSettings.pfs";
 const std::string file_drvmsettings = "UXDC-DRVM-CamSettings.pfs";
@@ -24,6 +26,11 @@ const std::string file_drvmsettings = "UXDC-DRVM-CamSettings.pfs";
 
 int main(int argc, char* argv[])
 {
+	eCAL::Initialize(0, 0, "UXDC_DRVMServer");
+	eCAL::Process::SetState(proc_sev_healthy, proc_sev_level1, "I feel good !");
+    // eCAL::protobuf::CPublisher<> pub_img;
+
+
 
     bool ShowGrabbedImage = false;
     
