@@ -5,17 +5,17 @@
 #include <opencv2/opencv.hpp>
 
 //#include "SampleImageCreator.h"
-#include <fstream>
+//#include <fstream>
 
 #include "BaslerCamera.h"
 
-using namespace cv;
+//using namespace cv;
 
 // Namespace for using pylon objects.
-using namespace Pylon;
+//using namespace Pylon;
 
 // Namespace for using cout.
-using namespace std;
+//using namespace std;
 
 
 const std::string file_originalcamsettings = "OriginalCamDefaultSettings.pfs";
@@ -50,10 +50,10 @@ int main(int argc, char* argv[])
 
 
     //while( cin.get() != '\n');
-    CGrabResultPtr ptrMyImage;
-    CImageFormatConverter formatConverter;
-	formatConverter.OutputPixelFormat = PixelType_BGR8packed;
-    CPylonImage pylonImage;
+    Pylon::CGrabResultPtr ptrMyImage;
+    Pylon::CImageFormatConverter formatConverter;
+	formatConverter.OutputPixelFormat = Pylon::PixelType_BGR8packed;
+    Pylon::CPylonImage pylonImage;
 
     // endless loop for grabbing images
     while (usedCamera.CamIsGrabbing())
@@ -72,7 +72,7 @@ int main(int argc, char* argv[])
 
             int iFrameNumber = ptrMyImage->GetImageNumber();
             int iTimestamp = ptrMyImage->GetTimeStamp();
-            cout << "Frame No: " << iFrameNumber << endl;
+            std::cout << "Frame No: " << iFrameNumber << std::endl;
             
             // Convert Basler Image to BGR8 Standard Image and send it away
             formatConverter.Convert(pylonImage, ptrMyImage);
@@ -80,14 +80,14 @@ int main(int argc, char* argv[])
             int iImageWidth = pylonImage.GetWidth();
             int iImageHeight = pylonImage.GetHeight();
             int iImageSizeBytes = pylonImage.GetImageSize();
-            cout << "Imagesize " << iImageSizeBytes << endl;
+            std::cout << "Imagesize " << iImageSizeBytes << std::endl;
 
             // Convert Image to an openCV Matrix (for jpeg compression and displaying)
-            Mat image_matrix = Mat(pylonImage.GetHeight(), pylonImage.GetWidth(), CV_8UC3, (uint8_t *)pylonImage.GetBuffer());
+            cv::Mat image_matrix = cv::Mat(pylonImage.GetHeight(), pylonImage.GetWidth(), CV_8UC3, (uint8_t *)pylonImage.GetBuffer());
 
 
             std::vector<uchar> jpeg_image;
-            bool erfolgreich = imencode(".jpg", image_matrix, jpeg_image);
+            bool erfolgreich = cv::imencode(".jpg", image_matrix, jpeg_image);
             // cout << "JPEG SIZE " << jpeg_image.size() << endl;
 
             // Mat dst=imdecode(jpeg_image,1);
@@ -99,9 +99,9 @@ int main(int argc, char* argv[])
             
             if (ShowGrabbedImage)    
             {
-                namedWindow("Digital Rear View Mirror Live View", WINDOW_AUTOSIZE);
-                imshow("Digital Rear View Mirror Live View", image_matrix);
-                waitKey(1);
+                cv::namedWindow("Digital Rear View Mirror Live View", cv::WINDOW_AUTOSIZE);
+                cv::imshow("Digital Rear View Mirror Live View", image_matrix);
+                cv::waitKey(1);
             }
         }
     }
