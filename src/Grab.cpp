@@ -119,6 +119,7 @@ int main(int argc, char* argv[])
     msg_videostream.set_allocated_mdeviceinfo(&msg_deviceinfo);
     msg_videostream.set_allocated_mimagesettings(&msg_imagesettings);
     msg_videostream.set_allocated_msensorsettings(&msg_sensorsettings);
+msg_videostream.set_allocated_mgrabbedimage(&msg_grabbedimage);
 
     int counter = 0;
     // endless loop for grabbing images
@@ -136,16 +137,16 @@ int main(int argc, char* argv[])
             // Access the image data.
             const uint8_t *pImageBuffer = (uint8_t *) ptrMyImage->GetBuffer();
 
-            int iFrameNumber = ptrMyImage->GetImageNumber();
-            int iTimestamp = ptrMyImage->GetTimeStamp();
-            std::cout << "Frame No: " << iFrameNumber << std::endl;
+            // int iFrameNumber = ptrMyImage->GetImageNumber();
+            // int iTimestamp = ptrMyImage->GetTimeStamp();
+//            std::cout << "Frame No: " << iFrameNumber << std::endl;
             
             // Convert Basler Image to BGR8 Standard Image and send it away
             formatConverter.Convert(pylonImage, ptrMyImage);
 
-            int iImageWidth = pylonImage.GetWidth();
-            int iImageHeight = pylonImage.GetHeight();
-            int iImageSizeBytes = pylonImage.GetImageSize();
+            // int iImageWidth = pylonImage.GetWidth();
+            // int iImageHeight = pylonImage.GetHeight();
+            // int iImageSizeBytes = pylonImage.GetImageSize();
             //std::cout << "Imagesize " << iImageSizeBytes << std::endl;
 
             // Convert Image to an openCV Matrix (for jpeg compression and displaying)
@@ -160,6 +161,17 @@ int main(int argc, char* argv[])
             // namedWindow("Test", WINDOW_AUTOSIZE);
             // imshow("Test",dst);
             // waitKey(1);
+            msg_grabbedimage.set_compression("JPEG");
+            msg_grabbedimage.set_fps_actual(ptrGeneralParameters->GetFPSActual());
+            msg_grabbedimage.set_size_x(pylonImage.GetWidth());
+            msg_grabbedimage.set_size_y(pylonImage.GetHeight());
+            msg_grabbedimage.set_reverse_x(ptrGeneralParameters->GetReverseX());
+            msg_grabbedimage.set_reverse_y(ptrGeneralParameters->GetReverseY());
+            msg_grabbedimage.set_timestamp(ptrMyImage->GetTimeStamp());
+            msg_grabbedimage.set_framenumber(ptrMyImage->GetImageNumber());
+            msg_grabbedimage.set_imagesize(jpeg_image.size());
+            msg_grabbedimage.set_payload(jpeg_image.data(), jpeg_image.size());
+
             msg_status.set_alive_counter(counter);
             counter++;
             pub_status.Send(msg_status);

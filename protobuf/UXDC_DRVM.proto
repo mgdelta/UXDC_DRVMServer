@@ -94,7 +94,7 @@ message GrabbedImage
 
 message DRVM_Status
 {
-  uint32 alive_counter = 1;
+  int32 alive_counter = 1;
 }
 
 message DRVM_VideoStream
