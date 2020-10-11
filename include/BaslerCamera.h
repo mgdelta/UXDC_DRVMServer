@@ -4,6 +4,7 @@
 #include "DeviceParameters.h"
 #include "GeneralParameters.h"
 #include <pylon/PylonIncludes.h>
+#include <map>
 
 
 class BaslerCamera
@@ -30,6 +31,7 @@ class BaslerCamera
         void GetGrabbedImage(Pylon::CGrabResultPtr &ptrImagePointer);
         void UpdateDeviceParameters(bool bUpdateAll = false);
 
+        std::map<std::string, std::string> GetDeviceInfoMap();
 
 
 

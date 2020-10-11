@@ -29,6 +29,21 @@ syntax = "proto3";
 
 package UXDC.DRVM;
 
+
+
+
+message CameraDeviceInfo
+{
+  string VendorName = 1;
+  string ModelName = 2;
+  string FullName = 3;
+  string FriendlyName = 4;
+  string DeviceFactory = 5;
+  string SerialNumber = 6;
+  string DeviceGUID = 7;
+}
+
+
 message DRVM_Status
 {
   uint32 alive_counter = 1;
@@ -36,6 +51,5 @@ message DRVM_Status
 
 message DRVM_VideoStream
 {
-  uint32  framenumber = 1;
-
+  CameraDeviceInfo mDeviceInfo = 1;  
 }

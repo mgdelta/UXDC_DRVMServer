@@ -25,6 +25,7 @@ const std::string file_drvmsettings = "UXDC-DRVM-CamSettings.pfs";
 
 #include "UXDC_DRVM.pb.h"    
 
+#include <map>
 int main(int argc, char* argv[])
 {
 	eCAL::Initialize(0, 0, "UXDC_DRVMServer");
@@ -33,6 +34,8 @@ int main(int argc, char* argv[])
     eCAL::protobuf::CPublisher<UXDC::DRVM::DRVM_VideoStream> pub_videostream("DRVM_VideoStream");
 
     UXDC::DRVM::DRVM_Status msg_status;
+    UXDC::DRVM::CameraDeviceInfo msg_deviceinfo;
+    UXDC::DRVM::DRVM_VideoStream msg_videostream;
 
     bool ShowGrabbedImage = false;
     
@@ -63,6 +66,20 @@ int main(int argc, char* argv[])
     Pylon::CImageFormatConverter formatConverter;
 	formatConverter.OutputPixelFormat = Pylon::PixelType_BGR8packed;
     Pylon::CPylonImage pylonImage;
+
+
+    std::map<std::string, std::string> mapDeviceInfo = usedCamera.GetDeviceInfoMap();
+
+    // prepare ecal message for static device info (will not change during operation)
+    msg_deviceinfo.set_deviceguid(mapDeviceInfo.find("DeviceGUID")->second);
+    msg_deviceinfo.set_devicefactory(mapDeviceInfo.find("DeviceFactory")->second);
+    msg_deviceinfo.set_friendlyname(mapDeviceInfo.find("FriendlyName")->second);
+    msg_deviceinfo.set_fullname(mapDeviceInfo.find("FullName")->second);
+    msg_deviceinfo.set_modelname(mapDeviceInfo.find("ModelName")->second);
+    msg_deviceinfo.set_serialnumber(mapDeviceInfo.find("SerialNumber")->second);
+    msg_deviceinfo.set_vendorname(mapDeviceInfo.find("VendorName")->second);
+
+    msg_videostream.set_allocated_mdeviceinfo(&msg_deviceinfo);
 
     int counter = 0;
     // endless loop for grabbing images
@@ -107,6 +124,7 @@ int main(int argc, char* argv[])
             msg_status.set_alive_counter(counter);
             counter++;
             pub_status.Send(msg_status);
+            pub_videostream.Send(msg_videostream);
             
             
             if (ShowGrabbedImage)    
