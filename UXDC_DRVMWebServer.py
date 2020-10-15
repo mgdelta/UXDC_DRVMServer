@@ -18,7 +18,7 @@ import ReceiveDRVMPackage
 
 
 app = Flask(__name__)
-MyReceiver = ReceiveBaslerPackage.BaslerReceiver()
+MyReceiver = ReceiveDRVMPackage.BaslerReceiver()
 
 
 @app.route('/')
@@ -44,5 +44,5 @@ def video_feed():
 
 
 if __name__ == '__main__':
-    print("Driver Video Streaming Server startet...")
+    print("UXDC Digital Rear View Mirror Video Streaming Server starting...")
     app.run(host='0.0.0.0', debug=False, use_reloader=False, port=5001)

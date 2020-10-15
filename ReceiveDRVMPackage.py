@@ -1,4 +1,5 @@
-import ecal
+import ecal.core.core as ecal_core
+from ecal.core.subscriber import ProtoSubscriber
 import sys
 #import VS_CamStream_pb2
 import UXDC_DRVM_pb2
@@ -10,16 +11,21 @@ import cv2
 class BaslerReceiver:
     def __init__(self):
         print("Initializing UXDC Videostrem Web server...")
-        print("eCAL %s (%s)\n" % (ecal.getversion(), ecal.getdate()))
+        # print eCAL version and date
+        print("eCAL {} ({})\n".format(ecal_core.getversion(),ecal_core.getdate()))
         # initialize eCAL API
-        ecal.initialize(sys.argv, "py_Basler_Receiver")
+        ecal_core.initialize(sys.argv, "UXDC_DRVM-WebServer")
 
         # needs module helper
         #filedescriptor = helper.get_descriptor_from_type(CameraImage_pb2.CameraImage)
+        # set process state
+        ecal_core.set_process_state(1, 1, "I feel good")
 
         # create eCAL subscriber for Basler camera message
-        basler_subscriber = ecal.subscriber("DRIVER_BASLER", "proto:pb.AL.CamStream.PassengerCameraData")
-        basler_subscriber.set_callback(self.callback)
+        #basler_subscriber = ecal.subscriber("UXDC_DRVMServer", "proto:pb.AL.CamStream.PassengerCameraData")       #
+        sub = ProtoSubscriber("UXDC_DRVMServer", UXDC_DRVM_pb2.DRVM_VideoStream)
+        sub.set_callback(self.callback)
+        #basler_subscriber.set_callback(self.callback)
 
         # Set some class variables for decompressing
         self.image = None
@@ -33,31 +39,32 @@ class BaslerReceiver:
 
     def __del__(self):
         # finalize eCAL API
-        ecal.finalize()
+        ecal_core.finalize()
 
     def callback(self, topic_name, msg, time):
         # Basler camera eCAL message object
-        baslermessage = VS_CamStream_pb2.PassengerCameraData()
+        #baslermessage = VS_CamStream_pb2.PassengerCameraData()                  #
         # deserialize Basler eCAL message
-        baslermessage.ParseFromString(msg)
-        self.image = baslermessage.CameraStreamData.image_payload
-        self.image_height = baslermessage.CameraStreamData.image_height
-        self.image_width = baslermessage.CameraStreamData.image_width
+        #baslermessage.ParseFromString(msg)                                      #    
+        #self.image = baslermessage.CameraStreamData.image_payload               #
+        #self.image_height = baslermessage.CameraStreamData.image_height         #
+        #self.image_width = baslermessage.CameraStreamData.image_width           #
 
         # convert Basler Image to JPG (streamable)
-        jpgimg = self.convert_image()
+        #jpgimg = self.convert_image()                                           #
 
         # save MFC image as jpg bytestream
-        self.lock.acquire()
-        self.Baslerimg_jpg = jpgimg
-        self.lock.release()
+        #self.lock.acquire()
+        #self.Baslerimg_jpg = jpgimg                                             #
+        #self.lock.release()
 
         # set Event for synchronization
-        self.event.set()
+        #self.event.set()
 
     def getimage(self):
-        return self.Baslerimg_jpg
+        return self.Baslerimg_jpg                                               #
 
+    # not needed, prepare JPEG image for HMI (flip, crop, resize, color space...)
     def convert_image(self):
         # convert Basler image payload to numpy array
         image_nparray = np.frombuffer(self.image, dtype=np.uint8)
