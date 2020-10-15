@@ -1,11 +1,11 @@
 import ecal.core.core as ecal_core
 from ecal.core.subscriber import ProtoSubscriber
 import sys
-#import VS_CamStream_pb2
 import UXDC_DRVM_pb2
 import threading
 import numpy as np
 import cv2
+from turbojpeg import TurboJPEG, TJPF_GRAY, TJSAMP_GRAY
 
 
 class BaslerReceiver:
@@ -22,10 +22,8 @@ class BaslerReceiver:
         ecal_core.set_process_state(1, 1, "I feel good")
 
         # create eCAL subscriber for Basler camera message
-        #basler_subscriber = ecal.subscriber("UXDC_DRVMServer", "proto:pb.AL.CamStream.PassengerCameraData")       #
-        sub = ProtoSubscriber("UXDC_DRVMServer", UXDC_DRVM_pb2.DRVM_VideoStream)
+        sub = ProtoSubscriber("DRVM_VideoStream", UXDC_DRVM_pb2.DRVM_VideoStream)
         sub.set_callback(self.callback)
-        #basler_subscriber.set_callback(self.callback)
 
         # Set some class variables for decompressing
         self.image = None
@@ -43,26 +41,29 @@ class BaslerReceiver:
 
     def callback(self, topic_name, msg, time):
         # Basler camera eCAL message object
-        #baslermessage = VS_CamStream_pb2.PassengerCameraData()                  #
+        pb_grabbedimage = msg.mGrabbedImage
+        #print("Grabbed")
+
         # deserialize Basler eCAL message
-        #baslermessage.ParseFromString(msg)                                      #    
-        #self.image = baslermessage.CameraStreamData.image_payload               #
-        #self.image_height = baslermessage.CameraStreamData.image_height         #
-        #self.image_width = baslermessage.CameraStreamData.image_width           #
-
-        # convert Basler Image to JPG (streamable)
-        #jpgimg = self.convert_image()                                           #
-
-        # save MFC image as jpg bytestream
-        #self.lock.acquire()
-        #self.Baslerimg_jpg = jpgimg                                             #
-        #self.lock.release()
+        self.image = pb_grabbedimage.Payload
+        self.image_height = pb_grabbedimage.Size_y
+        self.image_width = pb_grabbedimage.Size_x
+        self.image_size_bytes = pb_grabbedimage.ImageSize
+        self.image_compression = pb_grabbedimage.Compression
+        
+        if self.image_compression == "JPEG":
+            #print("JPEG compression")
+            self.lock.acquire()
+            self.Baslerimg_jpg = self.image
+            self.lock.release()
+        elif self.image_compression == "RAW":
+            print("Raw mode")
 
         # set Event for synchronization
-        #self.event.set()
+        self.event.set()
 
     def getimage(self):
-        return self.Baslerimg_jpg                                               #
+        return self.Baslerimg_jpg
 
     # not needed, prepare JPEG image for HMI (flip, crop, resize, color space...)
     def convert_image(self):
